@@ -9,13 +9,14 @@ Client myClient;
 int dataIn; 
 
 void setup() { 
-  frameRate(10);  
+  frameRate(60);  
   background (255,0,0);
   size(200, 200); 
   // Connect to the local machine at port 5204.
   // This example will not run if you haven't
   // previously started a server on this port.
-  myClient = new Client(this, "10.123.45.1", 23); // Simple Link Server on Telnet port
+//  myClient = new Client(this, "10.123.45.1", 23); // Simple Link Server on Telnet port
+  myClient = new Client(this, "127.0.0.1", 23); // Loop back to Server on Telnet port
 } 
 
 void draw() { 
