@@ -16,7 +16,9 @@ void setup() {
   // This example will not run if you haven't
   // previously started a server on this port.
 //  myClient = new Client(this, "10.123.45.1", 23); // Simple Link Server on Telnet port
-  myClient = new Client(this, "127.0.0.1", 23); // Loop back to Server on Telnet port
+//  myClient = new Client(this, "10.123.45.1", 5001); // Simple Link Server on Telnet port
+//  myClient = new Client(this, "127.0.0.1", 23); // Loop back to Server on Telnet port
+  myClient = new Client(this, "127.0.0.1", 5001); // Loop back to Server on Telnet port
 } 
 
 void draw() { 
