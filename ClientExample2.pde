@@ -2,13 +2,13 @@
 // Lee Erickson
 // 3 June 2019
 // Send command to socket for ST365 testing.
+//25 June 2019. Client try to connect to server and keeps on trying in setup() till success.
 
-import processing.net.*; 
-//import processing.net.*; 
+import processing.net.*;  
 
 Client myClient; 
 int dataIn; 
-color myBackground = color(0,0,0);
+color myBackground = color(255,0,0);
 PFont f;                          // Declare PFont variable
 
 //String sIPAddress = "10.123.45.1";// Simple Link AP Server
@@ -23,33 +23,26 @@ void setup() {
   background (myBackground);  
   size(400, 200); 
   f = createFont("Arial",6,true);     // Create Font 
-  textAlign(RIGHT);                    // Credit will be in lower right corner. //<>//
+  textAlign(RIGHT);                    // Credit will be in lower right corner.
 
-//  myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port
-
-int isconnected = 0; 
+int isconnected = 0; // Set zero for false
 do{
-
   try {// Might through an IOException when connecting to socket.
       myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port  
       if (myClient.active() == true) {
-        isconnected = 1;
-        println("I got an active client");
+        isconnected = 1; // has become true
       } else {
-        delay(100);
-      }
-      println("after that if");
+        print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
+        println(" Looking for server.");
+        delay(500);  //No server so waite before trying again.
+      }// else delay
   }
-   //catch (IOException e) {
-   //   println ("Did not get server. I got e= ", e);
-   //}
-   catch (Exception npe) {
-     println("Rod's print line.");
-      println ("Some other exception. I got npe= ", npe);
-   }
-   
-} while (isconnected ==0);
- println("end of setup."); 
+   catch (Exception npe) {     
+     println ("Some other exception. I got npe= ", npe);
+   }   
+} while (isconnected ==0);  
+  print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
+  println(" We have a server. Setup finished."); 
 }// end of setup. 
 
 void draw() {
@@ -64,12 +57,10 @@ void draw() {
       print(char(dataIn));
       text(s_messageServer, 400,50);
     }
-  } else { //Client not aactive
+  } else { //Client not active
     myBackground = color(255,0,0);
     text("Client not Active, Not connected to server",400, 10);
-    //println("Client is not active."); 
   }
-  //background(dataIn);
 } // end of draw.
 
 void mousePressed() {
