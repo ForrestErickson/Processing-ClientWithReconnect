@@ -10,6 +10,12 @@ int dataIn;
 color myBackground = color(0,0,0);
 PFont f;                          // Declare PFont variable
 
+//String sIPAddress = "10.123.45.1";// Simple Link AP Server
+//int MY_PORT = 23;  //Telnet port even though we are RAW socket.
+String sIPAddress = "127.0.0.1";
+int MY_PORT = 5001;  //Android app port
+
+String s_messageServer = "Not initilized";
 
 void setup() { 
   frameRate(60);
@@ -22,14 +28,15 @@ void setup() {
 //  myClient = new Client(this, "10.123.45.1", 23); // Simple Link AP Server on Telnet port
 //  myClient = new Client(this, "10.123.45.1", 5001); // Simple Link AP Server on Android app port
 //  myClient = new Client(this, "127.0.0.1", 23); // Loop back to Server on Telnet port
-  myClient = new Client(this, "127.0.0.1", 5001); // Loop back to Server on Android app port
+//  myClient = new Client(this, "127.0.0.1", 5001); // Loop back to Server on Android app port
+  myClient = new Client(this, sIPAddress, MY_PORT); // Loop back to Server on Android app port
 } 
 
 void draw() {
   background (myBackground);
   if (myClient.active() == true) {
     myBackground = (128);
-    text("Client connected",400, 10);
+    text("Client connected to server",400, 10);
 //    text(s_clientStatus,400, 20);
 //    text("Server:" + s_messageServer,400, 40);
 //    text("Client: " + s_messageClient,400, 50);
@@ -38,11 +45,14 @@ void draw() {
     if (myClient.available() > 0) {
       background (0,0,255);
       dataIn = myClient.read();
+      //s_messageServer = char(dataIn);
+      s_messageServer = "Receiving characters from server.";
       print(char(dataIn));
+      text(s_messageServer, 400,50);
     }
   } else { //Client not aactive
     myBackground = color(255,0,0);
-    text("Client non connected to server",400, 10);
+    text("Client not connected to server",400, 10);
     //println("Client is not active."); 
   }
   //background(dataIn);
