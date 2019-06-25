@@ -4,6 +4,7 @@
 // Send command to socket for ST365 testing.
 
 import processing.net.*; 
+//import processing.net.*; 
 
 Client myClient; 
 int dataIn; 
@@ -22,41 +23,54 @@ void setup() {
   background (myBackground);  
   size(400, 200); 
   f = createFont("Arial",6,true);     // Create Font 
-  textAlign(RIGHT);                    // Credit will be in lower right corner.
+  textAlign(RIGHT);                    // Credit will be in lower right corner. //<>//
 
-  // Some client set up strings.
-//  myClient = new Client(this, "10.123.45.1", 23); // Simple Link AP Server on Telnet port
-//  myClient = new Client(this, "10.123.45.1", 5001); // Simple Link AP Server on Android app port
-//  myClient = new Client(this, "127.0.0.1", 23); // Loop back to Server on Telnet port
-//  myClient = new Client(this, "127.0.0.1", 5001); // Loop back to Server on Android app port
-  myClient = new Client(this, sIPAddress, MY_PORT); // Loop back to Server on Android app port
-} 
+//  myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port
+
+int isconnected = 0; 
+do{
+
+  try {// Might through an IOException when connecting to socket.
+      myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port  
+      if (myClient.active() == true) {
+        isconnected = 1;
+        println("I got an active client");
+      } else {
+        delay(100);
+      }
+      println("after that if");
+  }
+   //catch (IOException e) {
+   //   println ("Did not get server. I got e= ", e);
+   //}
+   catch (Exception npe) {
+     println("Rod's print line.");
+      println ("Some other exception. I got npe= ", npe);
+   }
+   
+} while (isconnected ==0);
+ println("end of setup."); 
+}// end of setup. 
 
 void draw() {
   background (myBackground);
   if (myClient.active() == true) {
     myBackground = (128);
     text("Client connected to server",400, 10);
-//    text(s_clientStatus,400, 20);
-//    text("Server:" + s_messageServer,400, 40);
-//    text("Client: " + s_messageClient,400, 50);
-
- //   println("Client connected.");
     if (myClient.available() > 0) {
       background (0,0,255);
       dataIn = myClient.read();
-      //s_messageServer = char(dataIn);
       s_messageServer = "Receiving characters from server.";
       print(char(dataIn));
       text(s_messageServer, 400,50);
     }
   } else { //Client not aactive
     myBackground = color(255,0,0);
-    text("Client not connected to server",400, 10);
+    text("Client not Active, Not connected to server",400, 10);
     //println("Client is not active."); 
   }
   //background(dataIn);
-} 
+} // end of draw.
 
 void mousePressed() {
     if (mouseButton == LEFT){  
