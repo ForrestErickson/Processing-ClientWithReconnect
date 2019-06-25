@@ -8,10 +8,14 @@ import processing.net.*;
 Client myClient; 
 int dataIn; 
 
+//color myBackground = (255,0,0);
+color myBackground = color(0,0,0);
+
 void setup() { 
-  frameRate(60);  
-  background (255,0,0);
-  size(200, 200); 
+  frameRate(60);
+  background (myBackground);  
+  //background (255,0,0);
+  size(400, 200); 
   // Connect to the local machine at port 5204.
   // This example will not run if you haven't
   // previously started a server on this port.
@@ -21,9 +25,11 @@ void setup() {
   myClient = new Client(this, "127.0.0.1", 5001); // Loop back to Server on Telnet port
 } 
 
-void draw() { 
+void draw() {
+  background (myBackground);
   if (myClient.active() == true) {
-    background (255);
+    myBackground = (128);
+    //background (255);
  //   println("Client connected.");
     if (myClient.available() > 0) {
       background (0,0,255);
@@ -32,7 +38,8 @@ void draw() {
       //println("Client data recevied; " +stringIn);
     }
   } else { //Client not aactive
-    background(0);
+    myBackground = color(255,0,0);
+    //background(0);
     println("Client is not active."); 
   }
   //background(dataIn);
