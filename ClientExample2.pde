@@ -18,11 +18,11 @@ void setup() {
   f = createFont("Arial",6,true);     // Create Font 
   textAlign(RIGHT);                    // Credit will be in lower right corner.
 
-  // Connect to the local machine at port 5204.
-//  myClient = new Client(this, "10.123.45.1", 23); // Simple Link Server on Telnet port
-//  myClient = new Client(this, "10.123.45.1", 5001); // Simple Link Server on Telnet port
+  // Some client set up strings.
+//  myClient = new Client(this, "10.123.45.1", 23); // Simple Link AP Server on Telnet port
+//  myClient = new Client(this, "10.123.45.1", 5001); // Simple Link AP Server on Android app port
 //  myClient = new Client(this, "127.0.0.1", 23); // Loop back to Server on Telnet port
-  myClient = new Client(this, "127.0.0.1", 5001); // Loop back to Server on Telnet port
+  myClient = new Client(this, "127.0.0.1", 5001); // Loop back to Server on Android app port
 } 
 
 void draw() {
@@ -42,8 +42,8 @@ void draw() {
     }
   } else { //Client not aactive
     myBackground = color(255,0,0);
-    text("Client disconnected from server",400, 10);
-    println("Client is not active."); 
+    text("Client non connected to server",400, 10);
+    //println("Client is not active."); 
   }
   //background(dataIn);
 } 
