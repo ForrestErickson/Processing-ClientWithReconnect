@@ -7,18 +7,18 @@ import processing.net.*;
 
 Client myClient; 
 int dataIn; 
-
-//color myBackground = (255,0,0);
 color myBackground = color(0,0,0);
+PFont f;                          // Declare PFont variable
+
 
 void setup() { 
   frameRate(60);
   background (myBackground);  
-  //background (255,0,0);
   size(400, 200); 
+  f = createFont("Arial",6,true);     // Create Font 
+  textAlign(RIGHT);                    // Credit will be in lower right corner.
+
   // Connect to the local machine at port 5204.
-  // This example will not run if you haven't
-  // previously started a server on this port.
 //  myClient = new Client(this, "10.123.45.1", 23); // Simple Link Server on Telnet port
 //  myClient = new Client(this, "10.123.45.1", 5001); // Simple Link Server on Telnet port
 //  myClient = new Client(this, "127.0.0.1", 23); // Loop back to Server on Telnet port
@@ -29,17 +29,20 @@ void draw() {
   background (myBackground);
   if (myClient.active() == true) {
     myBackground = (128);
-    //background (255);
+    text("Client connected",400, 10);
+//    text(s_clientStatus,400, 20);
+//    text("Server:" + s_messageServer,400, 40);
+//    text("Client: " + s_messageClient,400, 50);
+
  //   println("Client connected.");
     if (myClient.available() > 0) {
       background (0,0,255);
       dataIn = myClient.read();
       print(char(dataIn));
-      //println("Client data recevied; " +stringIn);
     }
   } else { //Client not aactive
     myBackground = color(255,0,0);
-    //background(0);
+    text("Client disconnected from server",400, 10);
     println("Client is not active."); 
   }
   //background(dataIn);
