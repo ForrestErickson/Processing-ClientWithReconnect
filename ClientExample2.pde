@@ -8,6 +8,7 @@ import processing.net.*;
 
 Client myClient; 
 int dataIn; 
+int timeDisconnect = millis(); 
 color myBackground = color(255,0,0);
 PFont f;                          // Declare PFont variable
 
@@ -17,15 +18,10 @@ String sIPAddress = "127.0.0.1";
 int MY_PORT = 5001;  //Android app port
 
 String s_messageServer = "Not initilized";
-
-void setup() { 
-  frameRate(60);
-  background (myBackground);  
-  size(400, 200); 
-  f = createFont("Arial",6,true);     // Create Font 
-  textAlign(RIGHT);                    // Credit will be in lower right corner.
-
 int isconnected = 0; // Set zero for false
+
+void getSocket(){
+/// Opens a client network socket connection. Retries indefinatly.
 do{
   try {// Might through an IOException when connecting to socket.
       myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port  
@@ -42,24 +38,47 @@ do{
    }   
 } while (isconnected ==0);  
   print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
-  println(" We have a server. Setup finished."); 
+  println(" We have a server. Setup finished.");
+}//GetSocket
+
+void setup() { 
+  frameRate(60);
+  background (myBackground);  
+  size(400, 200); 
+  f = createFont("Arial",6,true);     // Create Font 
+  textAlign(RIGHT);    // Credit will be in lower right corner.
+  //getSocket();
 }// end of setup. 
 
 void draw() {
   background (myBackground);
-  if (myClient.active() == true) {
-    myBackground = (128);
-    text("Client connected to server",400, 10);
-    if (myClient.available() > 0) {
-      background (0,0,255);
-      dataIn = myClient.read();
-      s_messageServer = "Receiving characters from server.";
-      print(char(dataIn));
-      text(s_messageServer, 400,50);
-    }
-  } else { //Client not active
-    myBackground = color(255,0,0);
-    text("Client not Active, Not connected to server",400, 10);
+  if (isconnected == 1){
+      if (myClient.active() == true) {
+      myBackground = (128);
+      text("Client connected to server",400, 10);
+      if (myClient.available() > 0) {
+        background (0,0,255);
+        dataIn = myClient.read();
+        s_messageServer = "Receiving characters from server.";
+        print(char(dataIn));
+        text(s_messageServer, 400,50);
+        }
+    } else { //Client not active
+      //We need to get a socket again.  
+      isconnected = 0; // Set zero for false
+      myBackground = color(255,0,0);
+      background (myBackground);
+      text("Client not Active, Not connected to server",400, 10);
+      timeDisconnect = millis();
+      //myClient.stop();  //Just in case stop.
+      //getSocket();
+    }//Client not active  
+  } else if (timeDisconnect +1500 >millis()) {// Not isconnected
+      println("Get a socket.");
+      //myClient.stop();  //Just in case stop.
+      getSocket();
+  } else {
+    text("Pause before connecting to server",400, 10);
   }
 } // end of draw.
 
