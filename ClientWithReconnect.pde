@@ -1,9 +1,10 @@
-// ClientExample 2.
+// ClientWithReconnect.
 // Lee Erickson
 // 3 June 2019
-// Send command to socket for ST365 testing.
+// Send command to socket on server for testing of server coming and going and coming.
 // 25 June 2019. Client try to connect to server and keeps on trying in setup() till success.
-// 26 June 2019. Client reconnectes to server.
+// 26 June 2019. In draw() the Client reconnectes to server.
+// 27 Rename file.  Some clean up on notes.
 
 import processing.net.*;  
 
