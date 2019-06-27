@@ -3,7 +3,7 @@
 // 3 June 2019
 // Send command to socket for ST365 testing.
 // 25 June 2019. Client try to connect to server and keeps on trying in setup() till success.
-// 25 June 2019. Client reconnectes to server.
+// 26 June 2019. Client reconnectes to server.
 
 import processing.net.*;  
 
@@ -13,12 +13,12 @@ int timeDisconnect = millis();
 color myBackground = color(255,0,0);
 PFont f;                          // Declare PFont variable
 
-//String sIPAddress = "10.1.10.11";// Simple Link STA on LAN
-//int MY_PORT = 23;  //Telnet port even though we are RAW socket.
+String sIPAddress = "10.1.10.11";// Simple Link STA on LAN
+int MY_PORT = 23;  //Telnet port even though we are RAW socket.
 //String sIPAddress = "10.123.45.1";// Simple Link AP Server
 //int MY_PORT = 23;  //Telnet port even though we are RAW socket.
-String sIPAddress = "127.0.0.1";
-int MY_PORT = 5001;  //Android app port
+//String sIPAddress = "127.0.0.1";
+//int MY_PORT = 5001;  //Android app port
 
 String s_messageServer = "Not initilized";
 int isconnected = 0; // Set zero for false
@@ -92,6 +92,6 @@ void mousePressed() {
     }
     else {
       println(">Hello world");
-      myClient.write(">Hello world.\n\r");
+      myClient.write(">Hello world.\r\n");
     }
 }//end mousePressed
