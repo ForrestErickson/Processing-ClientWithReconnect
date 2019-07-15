@@ -1,10 +1,15 @@
-// ClientWithReconnect.
-// Lee Erickson
-// 3 June 2019
-// Send command to socket on server for testing of server coming and going and coming.
-// 25 June 2019. Client try to connect to server and keeps on trying in setup() till success.
-// 26 June 2019. In draw() the Client reconnectes to server.
-// 27 Rename file.  Some clean up on notes.
+/** ClientWithReconnect.
+ 
+ * /author F. Lee Erickson
+ * /date 3 June 2019
+ * /brief Send command to socket on server for testing of server coming and going and coming.
+ *
+ * 25 June 2019. Client try to connect to server and keeps on trying in setup() till success.
+ * 26 June 2019. In draw() the Client reconnectes to server.
+ * 27 Rename file.  Some clean up on notes.
+ * 15 July. Change isconnected to boolean. Update screen prompt when tryint to get socket.
+ * Change some comments to Doxygen format.
+*/
 
 import processing.net.*;  
 
@@ -23,7 +28,6 @@ String sIPAddress = "127.0.0.1";  //Local host.
 //int MY_PORT = 5001;  //Android app port
 
 String s_messageServer = "Not initilized";
-//int isconnected = 0; // Set zero for false. 1 for true.
 boolean isconnected = false; // Set zero for false. 1 for true.
 
 void getSocket(){
@@ -54,6 +58,7 @@ void setup() {
   size(400, 200); 
   f = createFont("Arial",6,true);     // Create Font 
   textAlign(RIGHT);    // Credit will be in lower right corner.
+  text("Client not Active, Not connected to server: " + sIPAddress+":"+MY_PORT, 400, 10);
   timeDisconnect = millis();
 }// end of setup. 
 
@@ -78,8 +83,8 @@ void draw() {
         timeDisconnect = millis();        
       }//end Client not active  
   } else if (timeDisconnect +3500 >millis()) {// Not isconnected
-      text("Get a socket.",400, 10);  
-      println("Get a socket.");
+      text("Tring to get a socket.",400, 10);  
+      println("Tring to get a socket.");
       getSocket();
   } else {
     myBackground = color(255,0,0);
@@ -88,14 +93,3 @@ void draw() {
     println("Pause before connecting to server");
   }
 } // end of draw.
-
-void mousePressed() {
-    if (mouseButton == LEFT){  
-    println(">04");
-    myClient.write(">04\r");    
-    }
-    else {
-      println(">Hello world");
-      myClient.write(">Hello world.\r\n");
-    }
-}//end mousePressed
