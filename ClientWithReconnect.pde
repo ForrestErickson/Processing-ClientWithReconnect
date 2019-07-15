@@ -31,12 +31,12 @@ String s_clientStatus = "Not initilized";
 String s_messageServer = "No message";
 String s_messageClient = "No message";
 
-boolean isconnected = false; // Set zero for false. 1 for true.
+boolean isconnected = false;                         // Set zero for false. 1 for true.
 
 void getSocket(){
 /// Opens a client network socket connection. Blockes and retries indefinatly.
 do{  
-  try {// Might through an IOException when connecting to socket.
+  try {                                // Might through an IOException when connecting to socket.
       myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port  
       if (myClient.active() == true) {
         isconnected = true; // has become true
@@ -44,7 +44,7 @@ do{
         text("Look for Socket",400,10);
         print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
         println(" Looking for server.");
-        delay(500);  //No server so waite before trying again.
+        delay(500);                                    //No server so waite before trying again.
       }// else delay
   }// end of try
    catch (Exception npe) {     
@@ -59,8 +59,8 @@ void setup() {
   frameRate(60);
   background (myBackground);  
   size(400, 200); 
-  f = createFont("Arial",6,true);     // Create Font 
-  textAlign(RIGHT);    // Credit will be in lower right corner.
+  f = createFont("Arial",6,true);                       // Create Font 
+  textAlign(RIGHT);                                     // Credit will be in lower right corner.
   text("Client not Active, Not connected to server: " + sIPAddress+":"+MY_PORT, 400, 10);
   timeDisconnect = millis();
 }// end of setup. 
@@ -71,7 +71,7 @@ void draw() {
       if (myClient.active() == true) {
       myBackground = color(128,128, 128); //(128);
       text("Client connected to server: "+sIPAddress+":"+MY_PORT, 400, 10);
-      if (myClient.available() > 0) { //We have some socket data from server.
+      if (myClient.available() > 0) {                   //We have some socket data from server.
         background (0,0,255);
         String whatServerSaid = myClient.readString();
         println(whatServerSaid);
@@ -79,32 +79,28 @@ void draw() {
         s_messageClient = "";
         text("Client: " + s_messageClient,400, 40);
         text("Server:" + s_messageServer,400, 20);  
-      } else {  // Connected but no new data.
+      } else {                                          // Connected but no new data.
         myBackground = color(128,128, 128); //(128);
         background (myBackground);
-//        text(s_messageServer, 400,50);
-//        text("Client Connection: "+ s_clientStatus,400, 50);
         text("Client: " + s_messageClient,400, 40);
         text("Server:" + s_messageServer,400, 20);  
       }
-      } else { //Client not active.          //We need to get a socket again.  
-        isconnected = false; // Set zero for false
+      } else { //Client not active.                      //We need to get a socket again.  
+        isconnected = false;                             // Set zero for false
         myBackground = color(255,0,0);
         background (myBackground);
         text("Client not Active, Not connected to server: " + sIPAddress+":"+MY_PORT, 400, 10);
         timeDisconnect = millis();    
-//        text("Client Connection: "+s_clientStatus,400, 50);
         text("Client: " + s_messageClient,400, 40);
         text("Server:" + s_messageServer,400, 20);  
       }//end Client not active  
-  } else if (timeDisconnect +3500 >millis()) {// Not isconnected
+  } else if (timeDisconnect +3500 >millis()) {          // Not isconnected
       text("Tring to get a socket.",400, 10);  
       println("Tring to get a socket.");
       getSocket();        
       text("Client Connection: "+s_clientStatus,400, 50);
       text("Client: " + s_messageClient,400, 40);
-      text("Server:" + s_messageServer,400, 20);  
-    
+      text("Server:" + s_messageServer,400, 20);      
     
   } else {
     myBackground = color(255,0,0);
