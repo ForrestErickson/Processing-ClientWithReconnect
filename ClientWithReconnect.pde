@@ -15,7 +15,7 @@
 import processing.net.*;  
 
 Client myClient; 
-int timeDisconnect = millis(); 
+int timeReconnect = millis(); 
 color myBackground = color(255,0,0);
 PFont f;                                          // Declare PFont variable
 
@@ -33,18 +33,17 @@ boolean isconnected = false;                         // Set zero for false. 1 fo
 
 void getSocket(){
 /// Opens a client network socket connection. Blockes and retries indefinatly.
-  if (timeDisconnect +1000 <millis())
+  if (timeReconnect +1000 <millis())
   {
   try {                                // Might through an IOException when connecting to socket.
       myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port  
       if (myClient.active() == true) {
         isconnected = true; // has become true
-        timeDisconnect = millis();
+        timeReconnect = millis();
       } else {
         text("Look for Socket",400,10);
         print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
         println(" Looking for server.");        
- //       delay(3500);                                    //No server so waite before trying again.
       }// else delay
   }// end of try
    catch (Exception npe) {     
@@ -62,7 +61,7 @@ void setup() {
   f = createFont("Arial",6,true);                       // Create Font 
   textAlign(RIGHT);                                     // Credit will be in lower right corner.
   text("Client not Active, Not connected to server: " + sIPAddress+":"+MY_PORT, 400, 10);
-  timeDisconnect = millis();
+  timeReconnect = millis();
 }// end of setup. 
 
 void draw() {
@@ -90,11 +89,11 @@ void draw() {
         myBackground = color(255,0,0);
         background (myBackground);
         text("Client not Active, Not connected to server: " + sIPAddress+":"+MY_PORT, 400, 10);
-//        timeDisconnect = millis();    
+//        timeReconnect = millis();    
         text("Client: " + s_messageClient,400, 40);
         text("Server:" + s_messageServer,400, 20);  
       }//end Client not active  
-  } else if (timeDisconnect +3500 >millis()) {          // Not isconnected
+  } else if (timeReconnect +3500 >millis()) {          // Not isconnected
         //Update window
             text("Tring to get a socket.",400, 10);  
             text("Client Connection: "+s_clientStatus,400, 50);
