@@ -33,24 +33,26 @@ boolean isconnected = false;                         // Set zero for false. 1 fo
 
 void getSocket(){
 /// Opens a client network socket connection. Blockes and retries indefinatly.
-do{  
+  if (timeDisconnect +1000 <millis())
+  {
   try {                                // Might through an IOException when connecting to socket.
       myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port  
       if (myClient.active() == true) {
         isconnected = true; // has become true
+        timeDisconnect = millis();
       } else {
         text("Look for Socket",400,10);
         print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
         println(" Looking for server.");        
-        delay(3500);                                    //No server so waite before trying again.
+ //       delay(3500);                                    //No server so waite before trying again.
       }// else delay
   }// end of try
    catch (Exception npe) {     
      println ("Some other exception. I got npe= ", npe);
-   }//end of catch   
-} while (!isconnected);  
+   }//end of catch     
   print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
-  println(" We have a server. Setup finished.");
+  println(" Try to connect to a server.");
+  }
 }//GetSocket
 
 void setup() { 
@@ -88,7 +90,7 @@ void draw() {
         myBackground = color(255,0,0);
         background (myBackground);
         text("Client not Active, Not connected to server: " + sIPAddress+":"+MY_PORT, 400, 10);
-        timeDisconnect = millis();    
+//        timeDisconnect = millis();    
         text("Client: " + s_messageClient,400, 40);
         text("Server:" + s_messageServer,400, 20);  
       }//end Client not active  
@@ -109,5 +111,6 @@ void draw() {
     text("Client Connection: "+s_clientStatus,400, 50);
     text("Client: " + s_messageClient,400, 40);
     text("Server:" + s_messageServer,400, 20);  
+    getSocket();  
   }
 } // end of draw.
