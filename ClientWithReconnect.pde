@@ -9,23 +9,21 @@
  * 27 Rename file.  Some clean up on notes.
  * 15 July. Change isconnected to boolean. Update screen prompt when tryint to get socket.
  * Change some comments to Doxygen format.
+ * Move keypress and mouse press to UserInput tab.  
 */
 
 import processing.net.*;  
 
 Client myClient; 
-int dataIn; 
 int timeDisconnect = millis(); 
 color myBackground = color(255,0,0);
-PFont f;                          // Declare PFont variable
+PFont f;                                          // Declare PFont variable
 
 /*Some IP addresses and ports. Comment all but one each. */
 //String sIPAddress = "10.1.10.11";// Simple Link STA on LAN
-int MY_PORT = 23;  //Telnet port even though we are RAW socket.
 //String sIPAddress = "10.123.45.1";// Simple Link AP Server
-//int MY_PORT = 23;  //Telnet port even though we are RAW socket.
 String sIPAddress = "127.0.0.1";  //Local host.
-//int MY_PORT = 5001;  //Android app port
+int MY_PORT = 23;  //Telnet port even though we are RAW socket.
 
 String s_clientStatus = "Not initilized";
 String s_messageServer = "No message";
@@ -43,8 +41,8 @@ do{
       } else {
         text("Look for Socket",400,10);
         print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
-        println(" Looking for server.");
-        delay(500);                                    //No server so waite before trying again.
+        println(" Looking for server.");        
+        delay(3500);                                    //No server so waite before trying again.
       }// else delay
   }// end of try
    catch (Exception npe) {     
@@ -95,12 +93,13 @@ void draw() {
         text("Server:" + s_messageServer,400, 20);  
       }//end Client not active  
   } else if (timeDisconnect +3500 >millis()) {          // Not isconnected
-      text("Tring to get a socket.",400, 10);  
+        //Update window
+            text("Tring to get a socket.",400, 10);  
+            text("Client Connection: "+s_clientStatus,400, 50);
+            text("Client: " + s_messageClient,400, 40);
+            text("Server:" + s_messageServer,400, 20);                
       println("Tring to get a socket.");
-      getSocket();        
-      text("Client Connection: "+s_clientStatus,400, 50);
-      text("Client: " + s_messageClient,400, 40);
-      text("Server:" + s_messageServer,400, 20);      
+      getSocket();              
     
   } else {
     myBackground = color(255,0,0);
