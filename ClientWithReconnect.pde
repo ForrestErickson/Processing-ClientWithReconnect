@@ -14,24 +14,27 @@ int timeDisconnect = millis();
 color myBackground = color(255,0,0);
 PFont f;                          // Declare PFont variable
 
-String sIPAddress = "10.1.10.11";// Simple Link STA on LAN
+/*Some IP addresses and ports. Comment all but one each. */
+//String sIPAddress = "10.1.10.11";// Simple Link STA on LAN
 int MY_PORT = 23;  //Telnet port even though we are RAW socket.
 //String sIPAddress = "10.123.45.1";// Simple Link AP Server
 //int MY_PORT = 23;  //Telnet port even though we are RAW socket.
-//String sIPAddress = "127.0.0.1";
+String sIPAddress = "127.0.0.1";  //Local host.
 //int MY_PORT = 5001;  //Android app port
 
 String s_messageServer = "Not initilized";
-int isconnected = 0; // Set zero for false
+//int isconnected = 0; // Set zero for false. 1 for true.
+boolean isconnected = false; // Set zero for false. 1 for true.
 
 void getSocket(){
 /// Opens a client network socket connection. Blockes and retries indefinatly.
-do{
+do{  
   try {// Might through an IOException when connecting to socket.
       myClient = new Client(this, sIPAddress, MY_PORT); // Open client as would Android app port  
       if (myClient.active() == true) {
-        isconnected = 1; // has become true
+        isconnected = true; // has become true
       } else {
+        text("Look for Socket",400,10);
         print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
         println(" Looking for server.");
         delay(500);  //No server so waite before trying again.
@@ -40,7 +43,7 @@ do{
    catch (Exception npe) {     
      println ("Some other exception. I got npe= ", npe);
    }//end of catch   
-} while (isconnected ==0);  
+} while (!isconnected);  
   print("Hr:Min:Seconds = " +hour()+":"+ minute() +":"+ second());
   println(" We have a server. Setup finished.");
 }//GetSocket
@@ -56,7 +59,7 @@ void setup() {
 
 void draw() {
   background (myBackground);
-  if (isconnected == 1){
+  if (isconnected){
       if (myClient.active() == true) {
       myBackground = (128);
       text("Client connected to server: "+sIPAddress+":"+MY_PORT, 400, 10);
@@ -68,7 +71,7 @@ void draw() {
         text(s_messageServer, 400,50);
         }
       } else { //Client not active.          //We need to get a socket again.  
-        isconnected = 0; // Set zero for false
+        isconnected = false; // Set zero for false
         myBackground = color(255,0,0);
         background (myBackground);
         text("Client not Active, Not connected to server: " + sIPAddress+":"+MY_PORT, 400, 10);
